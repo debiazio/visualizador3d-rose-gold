@@ -1,0 +1,19 @@
+{
+  "vendor": "mfmgroup",
+  "name": "visualizador-3d",
+  "version": "0.0.2",
+  "title": "Visualizador 3D",
+  "description": "App para ajustar as imagens para serem visualizadas no site em 3D",
+  "builders": {
+    "react": "3.x",
+    "messages": "1.x",
+    "docs": "0.x",
+    "store": "0.x"
+  },
+  "dependencies": {},
+  "registries": [
+    "smartcheckout"
+  ],
+  "policies": [],
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}
