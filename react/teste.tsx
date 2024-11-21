@@ -18,16 +18,18 @@ const ImageRotator = () => {
     setImageUrl(url);
   }, [prefix, suffix]);
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  const handleStart = (event: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
-    setStartX(event.clientX);
-    setStartY(event.clientY);
+    const { clientX, clientY } = getTouchPosition(event);
+    setStartX(clientX);
+    setStartY(clientY);
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  const handleMove = (event: React.MouseEvent | React.TouchEvent) => {
     if (isDragging) {
-      const diffX = event.clientX - startX;
-      const diffY = event.clientY - startY;
+      const { clientX, clientY } = getTouchPosition(event);
+      const diffX = clientX - startX;
+      const diffY = clientY - startY;
 
       // Movimento horizontal (rotação)
       if (Math.abs(diffX) > sensitivityX) {
@@ -36,7 +38,7 @@ const ImageRotator = () => {
         } else {
           handlePrev();
         }
-        setStartX(event.clientX);
+        setStartX(clientX);
       }
 
       // Movimento vertical (visualização superior/inferior)
@@ -46,12 +48,12 @@ const ImageRotator = () => {
         } else {
           handleUp();
         }
-        setStartY(event.clientY);
+        setStartY(clientY);
       }
     }
   };
 
-  const handleMouseUp = () => {
+  const handleEnd = () => {
     setIsDragging(false);
   };
 
@@ -71,15 +73,28 @@ const ImageRotator = () => {
     setPrefix((prevPrefix) => (prevPrefix === 0 ? 0 : prevPrefix - 1));
   };
 
+  const getTouchPosition = (
+    event: React.MouseEvent | React.TouchEvent
+  ): { clientX: number; clientY: number } => {
+    if ('touches' in event) {
+      const touch = event.touches[0];
+      return { clientX: touch.clientX, clientY: touch.clientY };
+    }
+    return { clientX: event.clientX, clientY: event.clientY };
+  };
+
   return (
     <div>
       <img
         src={imageUrl}
         alt={`Image ${prefix}_${suffix}`}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseDown={handleStart}
+        onMouseMove={handleMove}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
+        onTouchStart={handleStart}
+        onTouchMove={handleMove}
+        onTouchEnd={handleEnd}
         draggable="false"
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       />
@@ -88,4 +103,3 @@ const ImageRotator = () => {
 };
 
 export default ImageRotator;
-
