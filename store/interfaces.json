@@ -1,5 +1,11 @@
 {
   "visualizador-3d":{
     "component": "teste"
+  },
+  "vr-bellinha-rosa":{
+    "component": "bellinha-rosa"
+  },
+  "vr-bellinha-black":{
+    "component": "bellinha-black"
   }
 }
