@@ -99,6 +99,9 @@ const ImageRotator: React.FC = () => {
         width: '100%',
         userSelect: 'none',
         touchAction: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}
     >
       <img
@@ -116,6 +119,10 @@ const ImageRotator: React.FC = () => {
           width: '100%',
           display: 'block',
           cursor: isDragging ? 'grabbing' : 'grab',
+          margin: '24px',
+          boxShadow: 'white 1px 1px 74px',
+          borderRadius: '25px',
+          backgroundColor: "white"
         }}
       />
     </div>

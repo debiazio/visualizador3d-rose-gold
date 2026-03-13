@@ -7,16 +7,28 @@ const ImageRotator = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const maxPrefix = 4;
   const maxSuffix = 17;
-  const sensitivityX = 5; // Sensibilidade para movimento horizontal
-  const sensitivityY = 10; // Sensibilidade para movimento vertical
+  const sensitivityX = 5;
+  const sensitivityY = 10;
 
   useEffect(() => {
     const url = `https://stermax.com.br/images_idealine/labelle-rosa-vr/${prefix}_${suffix}.webp`;
     setImageUrl(url);
   }, [prefix, suffix]);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const handleStart = (event: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
@@ -31,7 +43,6 @@ const ImageRotator = () => {
       const diffX = clientX - startX;
       const diffY = clientY - startY;
 
-      // Movimento horizontal (rotação)
       if (Math.abs(diffX) > sensitivityX) {
         if (diffX >= 0) {
           handlePrev();
@@ -41,7 +52,6 @@ const ImageRotator = () => {
         setStartX(clientX);
       }
 
-      // Movimento vertical (visualização superior/inferior)
       if (Math.abs(diffY) > sensitivityY) {
         if (diffY >= 0) {
           handleUp();
@@ -84,7 +94,11 @@ const ImageRotator = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        padding: isMobile ? '24px 0' : '0',
+      }}
+    >
       <img
         src={imageUrl}
         alt={`Image ${prefix}_${suffix}`}
@@ -95,8 +109,16 @@ const ImageRotator = () => {
         onTouchStart={handleStart}
         onTouchMove={handleMove}
         onTouchEnd={handleEnd}
-        draggable="false"
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        draggable={false}
+        style={{
+          width: '100%',
+          display: 'block',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          margin: isMobile ? '0' : '24px',
+          boxShadow: 'white 1px 1px 74px',
+          borderRadius: '25px',
+          backgroundColor: 'white',
+        }}
       />
     </div>
   );
