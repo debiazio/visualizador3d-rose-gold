@@ -1,95 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState } from 'react'
 
-const ImageRotator = () => {
-  const [prefix, setPrefix] = useState(5);
-  const [suffix, setSuffix] = useState(1);
-  const [imageUrl, setImageUrl] = useState(
-    'https://stermax.com.br/images_idealine/vr-sweet-silver/5_1.webp'
-  );
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
+const BASE_URL =
+  'https://stermax.com.br/images_idealine/vr-sweet-silver'
 
-  const maxPrefix = 8;
-  const maxSuffix = 18;
-  const sensitivityX = 5; // Sensibilidade para movimento horizontal
-  const sensitivityY = 10; // Sensibilidade para movimento vertical
+const MAX_SUFFIX = 18
+const HORIZONTAL_STEP = 18
+const VERTICAL_STEP = 42
 
-  useEffect(() => {
-    const url = `https://stermax.com.br/images_idealine/vr-sweet-silver/${prefix}_${suffix}.webp`;
-    setImageUrl(url);
-  }, [prefix, suffix]);
+// Ordem visual real da navegação vertical:
+// topo -> reta -> baixo
+const VERTICAL_ORDER = [4, 3, 2, 1, 0, 5, 6, 7, 8]
 
-  const handleStart = (event: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    const { clientX, clientY } = getTouchPosition(event);
-    setStartX(clientX);
-    setStartY(clientY);
-  };
+const ImageRotator: React.FC = () => {
+  const [verticalIndex, setVerticalIndex] = useState(4) // começa no prefix 0
+  const [suffix, setSuffix] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const handleMove = (event: React.MouseEvent | React.TouchEvent) => {
-    if (isDragging) {
-      const { clientX, clientY } = getTouchPosition(event);
-      const diffX = clientX - startX;
-      const diffY = clientY - startY;
+  const startXRef = useRef(0)
+  const startYRef = useRef(0)
+  const accXRef = useRef(0)
+  const accYRef = useRef(0)
 
-      // Movimento horizontal (rotação)
-      if (Math.abs(diffX) > sensitivityX) {
-        if (diffX >= 0) {
-          handlePrev();
-        } else {
-          handleNext();
-        }
-        setStartX(clientX);
-      }
+  const prefix = VERTICAL_ORDER[verticalIndex]
 
-      // Movimento vertical (visualização superior/inferior)
-      if (Math.abs(diffY) > sensitivityY) {
-        if (diffY >= 0) {
-          handleUp();
-        } else {
-          handleDown();
-        }
-        setStartY(clientY);
-      }
-    }
-  };
+  const imageUrl = useMemo(() => {
+    return `${BASE_URL}/${prefix}_${suffix}.webp`
+  }, [prefix, suffix])
 
-  const handleEnd = () => {
-    setIsDragging(false);
-  };
-
-  const handleNext = () => {
-    setSuffix((prevSuffix) => (prevSuffix + 1) % (maxSuffix + 1));
-  };
-
-  const handlePrev = () => {
-    setSuffix((prevSuffix) => (prevSuffix === 0 ? maxSuffix : prevSuffix - 1));
-  };
-
-  const handleUp = () => {
-    setPrefix((prevPrefix) => (prevPrefix === maxPrefix ? maxPrefix : prevPrefix + 1));
-  };
-
-  const handleDown = () => {
-    setPrefix((prevPrefix) => (prevPrefix === 0 ? 0 : prevPrefix - 1));
-  };
-
-  const getTouchPosition = (
+  const getPointerPosition = (
     event: React.MouseEvent | React.TouchEvent
   ): { clientX: number; clientY: number } => {
     if ('touches' in event) {
-      const touch = event.touches[0];
-      return { clientX: touch.clientX, clientY: touch.clientY };
+      const touch = event.touches[0]
+      return { clientX: touch.clientX, clientY: touch.clientY }
     }
-    return { clientX: event.clientX, clientY: event.clientY };
-  };
+
+    return { clientX: event.clientX, clientY: event.clientY }
+  }
+
+  const handleStart = (event: React.MouseEvent | React.TouchEvent) => {
+    const { clientX, clientY } = getPointerPosition(event)
+
+    setIsDragging(true)
+    startXRef.current = clientX
+    startYRef.current = clientY
+    accXRef.current = 0
+    accYRef.current = 0
+  }
+
+  const handleMove = (event: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return
+
+    const { clientX, clientY } = getPointerPosition(event)
+
+    const deltaX = clientX - startXRef.current
+    const deltaY = clientY - startYRef.current
+
+    startXRef.current = clientX
+    startYRef.current = clientY
+
+    accXRef.current += deltaX
+    accYRef.current += deltaY
+
+    while (Math.abs(accXRef.current) >= HORIZONTAL_STEP) {
+      if (accXRef.current > 0) {
+        setSuffix(prev => (prev === 0 ? MAX_SUFFIX : prev - 1))
+        accXRef.current -= HORIZONTAL_STEP
+      } else {
+        setSuffix(prev => (prev + 1) % (MAX_SUFFIX + 1))
+        accXRef.current += HORIZONTAL_STEP
+      }
+    }
+
+    while (Math.abs(accYRef.current) >= VERTICAL_STEP) {
+      if (accYRef.current > 0) {
+        // arrastou para baixo
+        setVerticalIndex(prev =>
+          Math.min(prev + 1, VERTICAL_ORDER.length - 1)
+        )
+        accYRef.current -= VERTICAL_STEP
+      } else {
+        // arrastou para cima
+        setVerticalIndex(prev => Math.max(prev - 1, 0))
+        accYRef.current += VERTICAL_STEP
+      }
+    }
+  }
+
+  const handleEnd = () => {
+    setIsDragging(false)
+    accXRef.current = 0
+    accYRef.current = 0
+  }
 
   return (
-    <div>
+    <div
+      style={{
+        width: '100%',
+        userSelect: 'none',
+        touchAction: 'none',
+      }}
+    >
       <img
         src={imageUrl}
-        alt={`Image ${prefix}_${suffix}`}
+        alt={`Imagem 360 ${prefix}_${suffix}`}
         onMouseDown={handleStart}
         onMouseMove={handleMove}
         onMouseUp={handleEnd}
@@ -97,11 +111,15 @@ const ImageRotator = () => {
         onTouchStart={handleStart}
         onTouchMove={handleMove}
         onTouchEnd={handleEnd}
-        draggable="false"
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        draggable={false}
+        style={{
+          width: '100%',
+          display: 'block',
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ImageRotator;
+export default ImageRotator
