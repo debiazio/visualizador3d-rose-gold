@@ -8,7 +8,22 @@
   "vr-bellinha-black":{
     "component": "bellinha-black"
   },
-  "vr-sweet-black":{
+  "vr-sweet-silver":{
     "component": "sweetSilver"
+  },
+  "vr-rose-gold":{
+    "component": "roseGold"
+  },
+  "vr-rosa":{
+    "component": "rosa"
+  },
+  "vr-perola":{
+    "component": "perola"
+  },
+  "vr-sweet-black":{
+    "component": "sweetBlack"
+  },
+  "vr-dr-marcelo":{
+    "component": "drMarcelo"
   }
 }

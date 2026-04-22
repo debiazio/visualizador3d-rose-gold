@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 import { IMAGE_BASES } from './config/imageBases'
 
-const BASE_URL = IMAGE_BASES.sweetSilverVr
+const BASE_URL = IMAGE_BASES.perolaVr
 
 const MAX_SUFFIX = 18
 const HORIZONTAL_STEP = 18
