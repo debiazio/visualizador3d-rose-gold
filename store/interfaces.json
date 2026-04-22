@@ -25,5 +25,8 @@
   },
   "vr-dr-marcelo":{
     "component": "drMarcelo"
+  },
+  "vr-sweet-pink":{
+    "component": "sweetPink"
   }
 }

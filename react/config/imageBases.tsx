@@ -5,6 +5,7 @@ export const IMAGE_BASES = {
   perolaVr: 'https://stermax.com.br/images_idealine/perola-360',
   sweetBlackVr: 'https://stermax.com.br/images_idealine/sweet-black-360',
   drMarceloVr: 'https://stermax.com.br/images_idealine/drmarcelo-360',
+  sweetPinkVr: 'https://stermax.com.br/images_idealine/sweet-pink-360',
 } as const
 
 export type ImageBaseKey = keyof typeof IMAGE_BASES
