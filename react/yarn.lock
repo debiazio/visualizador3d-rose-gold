@@ -3992,9 +3992,9 @@ merge-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
-"mfmgroup.visualizador-3d@http://mfmgroup.vtexassets.com/_v/public/typings/v1/mfmgroup.visualizador-3d@0.0.4/public/@types/mfmgroup.visualizador-3d":
-  version "0.0.4"
-  resolved "http://mfmgroup.vtexassets.com/_v/public/typings/v1/mfmgroup.visualizador-3d@0.0.4/public/@types/mfmgroup.visualizador-3d#9351f31593dd467c6e51f998e22e68e1298350b6"
+"mfmgroup.visualizador-3d@https://idealinedev--mfmgroup.myvtex.com/_v/private/typings/linked/v1/mfmgroup.visualizador-3d@0.0.11+build1779306072/public/@types/mfmgroup.visualizador-3d":
+  version "0.0.11"
+  resolved "https://idealinedev--mfmgroup.myvtex.com/_v/private/typings/linked/v1/mfmgroup.visualizador-3d@0.0.11+build1779306072/public/@types/mfmgroup.visualizador-3d#b4dc66638a0c21d7629b535b5b92d49f95d45c27"
 
 micromatch@^3.1.4:
   version "3.1.10"
@@ -5341,9 +5341,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.1/public/@types/vtex.render-runtime":
-  version "8.136.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.1/public/@types/vtex.render-runtime#f163acbdb0fcc9be2065a34eb4fc797093f6d0ce"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.2/public/@types/vtex.render-runtime":
+  version "8.136.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.2/public/@types/vtex.render-runtime#afc85cc43da5ee3fc2f0efa000f31adada482d03"
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"

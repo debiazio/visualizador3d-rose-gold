@@ -13,7 +13,7 @@ const VERTICAL_ORDER = [4, 3, 2, 1, 0, 5, 6, 7, 8]
 const INITIAL_VERTICAL_INDEX = 6
 const INITIAL_SUFFIX = 3
 
-const plenavr: React.FC = () => {
+const lilac: React.FC = () => {
   const [verticalIndex, setVerticalIndex] = useState(INITIAL_VERTICAL_INDEX)
   const [suffix, setSuffix] = useState(INITIAL_SUFFIX)
   const [isDragging, setIsDragging] = useState(false)
@@ -147,4 +147,4 @@ const plenavr: React.FC = () => {
   )
 }
 
-export default plenavr
+export default lilac
