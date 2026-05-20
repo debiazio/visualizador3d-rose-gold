@@ -1,7 +1,7 @@
 {
   "vendor": "mfmgroup",
   "name": "visualizador-3d",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "title": "Visualizador 3D",
   "description": "App para ajustar as imagens para serem visualizadas no site em 3D",
   "builders": {
