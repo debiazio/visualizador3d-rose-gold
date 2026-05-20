@@ -28,5 +28,8 @@
   },
   "vr-sweet-pink":{
     "component": "sweetPink"
+  },
+  "vr-lilac":{
+    "component": "lilac"
   }
 }
