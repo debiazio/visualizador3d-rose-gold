@@ -23,14 +23,11 @@ const lilac: React.FC = () => {
   const accXRef = useRef(0)
   const accYRef = useRef(0)
 
+
   const prefix = VERTICAL_ORDER[verticalIndex]
 
-  const imageUrls = useMemo(() => {
-    const paddedSuffix = String(suffix).padStart(4, '0')
-    return {
-      primary: `${BASE_URL}/${prefix}_${paddedSuffix}.webp`,   // formato novo
-      fallback: `${BASE_URL}/${prefix}_${suffix}.webp`         // formato antigo
-    }
+  const imageUrl = useMemo(() => {
+    return `${BASE_URL}/${prefix}_${suffix}.webp`
   }, [prefix, suffix])
 
   const getPointerPosition = (
@@ -38,11 +35,13 @@ const lilac: React.FC = () => {
   ): { clientX: number; clientY: number } => {
     if ('touches' in event) {
       const touch = event.touches[0]
+
       return {
         clientX: touch.clientX,
         clientY: touch.clientY,
       }
     }
+
     return {
       clientX: event.clientX,
       clientY: event.clientY,
@@ -102,13 +101,6 @@ const lilac: React.FC = () => {
     accYRef.current = 0
   }
 
-  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = event.currentTarget
-    if (img.src === imageUrls.primary) {
-      img.src = imageUrls.fallback // tenta o formato antigo
-    }
-  }
-
   return (
     <div
       style={{
@@ -129,9 +121,8 @@ const lilac: React.FC = () => {
         }}
       >
         <img
-          src={imageUrls.primary}
+          src={imageUrl}
           alt={`Imagem 360 ${prefix}_${suffix}`}
-          onError={handleImageError}
           onMouseDown={handleStart}
           onMouseMove={handleMove}
           onMouseUp={handleEnd}
